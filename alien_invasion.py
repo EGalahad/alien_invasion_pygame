@@ -20,9 +20,15 @@ class AlienInvasion:
         pygame.init()
         self.settings = Settings()
 
-        self.screen = pygame.display.set_mode(
-            (self.settings.screen_width, self.settings.screen_height))
-        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        full_screen = False
+        if full_screen:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+            self.settings.screen_width = self.screen.get_rect().width
+            self.settings.screen_height = self.screen.get_rect().height
+        else:
+            self.screen = pygame.display.set_mode(
+                (self.settings.screen_width, self.settings.screen_height))
+
         pygame.display.set_caption("Alien Invasion")
 
         self.stats = GameStats(self)
@@ -178,7 +184,8 @@ class AlienInvasion:
         if bomb is not None:
             x, y = bomb.rect.center
 
-            pygame.draw.circle(self.screen, (255, 0, 0), (x, y), bomb.harm_radius)
+            pygame.draw.circle(self.screen, (255, 0, 0),
+                               (x, y), bomb.harm_radius)
             pygame.display.flip()
             sleep(0.5)
 
@@ -243,7 +250,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullet_max:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
-    
+
     def _fire_bomb(self):
         if self.stats.bombs_left > 0:
             new_bomb = Bomb(self)
@@ -272,8 +279,6 @@ class AlienInvasion:
         pygame.display.flip()
 
 
-
 if __name__ == '__main__':
     ai = AlienInvasion()
     ai.run_game()
-

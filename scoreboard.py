@@ -12,7 +12,8 @@ class Scoreboard:
         self.font = pygame.font.SysFont(None, 48)
 
         self.prep_score()
-        self.prep_left_lives()
+        self.prep_left_ships()
+        self.prep_left_bombs()
         self.prep_high_score()
         
 
@@ -24,7 +25,7 @@ class Scoreboard:
         self.score_rect.right = self.screen_rect.right - 20
         self.score_rect.top = 20
     
-    def prep_left_lives(self) -> None:
+    def prep_left_ships(self) -> None:
         lives_str = "Left ships: " + str(self.stats.ships_left)
         self.left_lives_image = self.font.render(
             lives_str, True, self.text_color, self.settings.bg_color)
@@ -40,8 +41,18 @@ class Scoreboard:
         self.high_score_rect = self.high_score_image.get_rect()
         self.high_score_rect.centerx = self.screen_rect.centerx
         self.high_score_rect.top = self.score_rect.top
+    
+    def prep_left_bombs(self) -> None:
+        left_bomb_str = "Left bombs: " + str(self.stats.bombs_left)
+        
+        self.left_bombs_image = self.font.render(
+            left_bomb_str, True, self.text_color, self.settings.bg_color)
+        self.left_bombs_rect = self.left_bombs_image.get_rect()
+        self.left_bombs_rect.right = self.screen_rect.right - 20
+        self.left_bombs_rect.top = self.left_lives_rect.bottom + 20
         
     def show_score(self) -> None:
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.left_lives_image, self.left_lives_rect)
+        self.screen.blit(self.left_bombs_image, self.left_bombs_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
